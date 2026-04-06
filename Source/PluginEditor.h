@@ -44,6 +44,8 @@ private:
     
     juce::Slider m_staticComunicationSlider;
     juce::Slider m_memMappedFileComunicationSlider;
+    juce::Label  m_memMappedLabel;
+    juce::Label  m_staticComsLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessorEditor)
 };

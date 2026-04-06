@@ -19,12 +19,19 @@ NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor (NewProjectAudioP
     staticPluginComunication = StaticPluginComunicationManager::getShared();
     staticPluginComunication->addListener(this);
     
+    addAndMakeVisible(m_staticComsLabel);
+    m_staticComsLabel.setText("In-Process Static Comunication", juce::dontSendNotification);
+    m_staticComsLabel.attachToComponent(&m_staticComunicationSlider, false);
+    
     addAndMakeVisible(m_staticComunicationSlider);
     m_staticComunicationSlider.onValueChange = [&] ()
     {
         staticPluginComunication->setValue(m_staticComunicationSlider.getValue());
     };
     
+    addAndMakeVisible(m_memMappedLabel);
+    m_memMappedLabel.setText("Memory Mapped File Comunication", juce::dontSendNotification);
+    m_memMappedLabel.attachToComponent(&m_memMappedFileComunicationSlider, false);
     
     memMappedFilePluginComunication.addListener(this);
     addAndMakeVisible(m_memMappedFileComunicationSlider);
@@ -49,9 +56,12 @@ void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
 
 void NewProjectAudioProcessorEditor::resized()
 {
-    auto area = getLocalBounds();
-    m_staticComunicationSlider       .setBounds(area.removeFromTop(getHeight() / 3));
-    m_memMappedFileComunicationSlider.setBounds(area.removeFromBottom(getHeight() / 3));
+    auto area = getLocalBounds().reduced(50);
+    m_staticComunicationSlider       .setBounds(area.removeFromTop(getHeight() / 3).reduced(20));
+    m_memMappedFileComunicationSlider.setBounds(area.removeFromBottom(getHeight() / 3).reduced(20));
+    
+    m_memMappedLabel.setBounds(m_memMappedFileComunicationSlider.getBounds());
+    m_staticComsLabel.setBounds(m_staticComunicationSlider.getBounds());
 }
 
 void NewProjectAudioProcessorEditor::interPluginValueChanged(float value)
